@@ -6,6 +6,8 @@ import { AnalyticsSection } from './components/AnalyticsSection';
 import { LogTradeForm } from './components/LogTradeForm';
 import { TradeHistoryTable } from './components/TradeHistoryTable';
 
+import { LoginPage } from './components/LoginPage';
+
 function useLiveDate() {
   const [dateStr, setDateStr] = useState(() =>
     new Date().toLocaleString(undefined, {
@@ -36,6 +38,21 @@ function useLiveDate() {
 }
 
 export default function App() {
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem('currentUser');
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+    localStorage.setItem('currentUser', JSON.stringify(userData));
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('currentUser');
+  };
+
   const liveDate = useLiveDate();
   const {
     filteredTrades,
@@ -47,16 +64,21 @@ export default function App() {
     deleteTrade,
     updateTrade,
     exportData,
-  } = useTrades();
+    importData,
+  } = useTrades(user?.id);
+
+  if (!user) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
 
   return (
     <div className="app-container">
-      <Sidebar onExport={exportData} />
+      <Sidebar onExport={exportData} onImport={importData} onLogout={handleLogout} />
       <main className="main-content">
         <header className="top-bar">
           <div>
             <p className="page-subtitle">Alpha Challenge Dashboard</p>
-            <h2>Trading Overview</h2>
+            <h2>Trading Overview • {user.name}</h2>
           </div>
           <div className="user-profile">
             <div className="badge-live">Live Session</div>

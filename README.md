@@ -1,5 +1,7 @@
 # AlphaJournal – Trading Dashboard
 
+[Live Demo](https://0xsanket.github.io/fx-journal/)
+
 ## React version (recommended)
 
 The app is now built with **React** and **Vite** for a dynamic, interactive UI.

@@ -364,6 +364,42 @@ function exportData() {
     a.click();
 }
 
+function importFromLink() {
+    const inputEl = document.getElementById('import-link-input');
+    const url = inputEl ? inputEl.value.trim() : '';
+    if (!url) return;
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(parsed => {
+            let importedTrades = [];
+            if (Array.isArray(parsed)) {
+                importedTrades = parsed;
+            } else if (parsed && Array.isArray(parsed.trades)) {
+                importedTrades = parsed.trades;
+            } else {
+                alert('Invalid backup format from link. Expected an array of trades.');
+                return;
+            }
+
+            trades = importedTrades;
+            localStorage.setItem('trades', JSON.stringify(trades));
+            updateDashboard();
+            if (inputEl) {
+                inputEl.value = '';
+            }
+        })
+        .catch(err => {
+            console.error('Failed to import from link', err);
+            alert('Could not fetch this JSON link. Please check that it is correct and accessible.');
+        });
+}
+
 function importData(event) {
     const file = event.target.files && event.target.files[0];
     if (!file) return;

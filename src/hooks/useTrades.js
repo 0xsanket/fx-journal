@@ -12,9 +12,11 @@ function normalizePair(pair) {
   return pair.trim().toUpperCase();
 }
 
-function loadTrades() {
+function loadTrades(userId) {
+  if (!userId) return [];
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const key = `${STORAGE_KEY}_${userId}`;
+    const raw = localStorage.getItem(key);
     const trades = raw ? JSON.parse(raw) : [];
     // Ensure all trades have IDs and normalized pairs for backwards compatibility
     return trades.map((t) => {
@@ -35,17 +37,23 @@ function loadTrades() {
   }
 }
 
-function saveTrades(trades) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(trades));
+function saveTrades(userId, trades) {
+  if (!userId) return;
+  const key = `${STORAGE_KEY}_${userId}`;
+  localStorage.setItem(key, JSON.stringify(trades));
 }
 
-export function useTrades() {
-  const [trades, setTrades] = useState(loadTrades);
+export function useTrades(userId) {
+  const [trades, setTrades] = useState(() => loadTrades(userId));
   const [filters, setFilters] = useState({ pair: '', result: '' });
 
   useEffect(() => {
-    saveTrades(trades);
-  }, [trades]);
+    setTrades(loadTrades(userId));
+  }, [userId]);
+
+  useEffect(() => {
+    saveTrades(userId, trades);
+  }, [trades, userId]);
 
   const filteredTrades = useMemo(() => {
     let list = [...trades];
@@ -173,6 +181,28 @@ export function useTrades() {
     URL.revokeObjectURL(url);
   }
 
+  function importData(data) {
+    if (!Array.isArray(data)) {
+      alert('Invalid data: Imported file must contain a list of trades.');
+      return;
+    }
+    const normalized = data.map((t) => {
+      const id = t.id || generateId();
+      const pair = normalizePair(t.pair);
+      const strategy = typeof t.strategy === 'string' ? t.strategy.trim() : t.strategy;
+      const tradeType = typeof t.tradeType === 'string' ? t.tradeType.trim() : t.tradeType;
+      return {
+        ...t,
+        id,
+        ...(pair ? { pair } : {}),
+        ...(strategy ? { strategy } : {}),
+        ...(tradeType ? { tradeType } : {}),
+      };
+    });
+    setTrades(normalized);
+    alert('Data imported successfully!');
+  }
+
   return {
     trades,
     filteredTrades,
@@ -184,5 +214,6 @@ export function useTrades() {
     deleteTrade,
     updateTrade,
     exportData,
+    importData,
   };
 }

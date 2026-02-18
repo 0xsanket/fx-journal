@@ -43,6 +43,34 @@ body {
 }
 .nav-links li.active, .nav-links li:hover { background: var(--primary); }
 
+.sidebar-import-link {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-import-link input {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 0.8rem;
+}
+
+.sidebar-import-btn {
+    background: #1d4ed8;
+    color: #e5e7eb;
+    border: none;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-align: center;
+}
+
+.sidebar-import-btn:hover {
+    background: #2563eb;
+}
+
 /* Main Content */
 .main-content { 
     flex: 1; 
