@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlphaJournal | Forex Dashboard (Vanilla)</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="logo">Alpha<span>Journal</span></div>
+            <ul class="nav-links">
+                <li class="active"><i data-lucide="layout-dashboard"></i> Dashboard</li>
+                <li onclick="exportData()"><i data-lucide="download"></i> Backup Data</li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div>
+                    <p class="page-subtitle">Alpha Challenge Dashboard</p>
+                    <h2>Trading Overview</h2>
+                </div>
+                <div class="user-profile">
+                    <div class="badge-live">Live Session</div>
+                    <span id="date-display"></span>
+                </div>
+            </header>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label-row">
+                        <p>Total Equity</p>
+                        <span class="stat-tag">Account</span>
+                    </div>
+                    <h3 id="total-equity">$0.00</h3>
+                    <span id="equity-change" class="trend up">+0.0%</span>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label-row">
+                        <p>Win Rate</p>
+                        <span class="stat-tag neutral">Performance</span>
+                    </div>
+                    <h3 id="win-rate">0%</h3>
+                    <p class="stat-subtext" id="trades-summary">0 wins / 0 losses</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label-row">
+                        <p>Profit Factor</p>
+                        <span class="stat-tag">Risk</span>
+                    </div>
+                    <h3 id="profit-factor">0.00</h3>
+                    <p class="stat-subtext" id="avg-pnl">Avg trade: $0.00</p>
+                </div>
+            </div>
+
+            <div class="charts-row">
+                <div class="chart-container main-chart">
+                    <div class="chart-header">
+                        <h4>Trade Growth View</h4>
+                        <span class="chart-subtitle">Equity evolution across all trades</span>
+                    </div>
+                    <canvas id="equityChart"></canvas>
+                </div>
+                <div class="chart-container side-chart">
+                    <div class="chart-header">
+                        <h4>Symbol Performance</h4>
+                        <span class="chart-subtitle">Distribution of trades per pair</span>
+                    </div>
+                    <canvas id="pairChart"></canvas>
+                </div>
+            </div>
+
+            <section class="analytics-section">
+                <div class="analytics-tabs">
+                    <button class="analytics-tab active" data-tab="detailed">Detailed Stats</button>
+                    <button class="analytics-tab" data-tab="analytics">Analytics</button>
+                </div>
+
+                <div class="analytics-panels">
+                    <div class="analytics-panel active" id="panel-detailed">
+                        <div class="detail-grid">
+                            <div class="detail-group">
+                                <div class="detail-row">
+                                    <span>Equity</span>
+                                    <strong id="detail-equity">$0.00</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Balance</span>
+                                    <strong id="detail-balance">$0.00</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Gross Profit</span>
+                                    <strong id="detail-gross-profit">$0.00</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Gross Loss</span>
+                                    <strong id="detail-gross-loss">$0.00</strong>
+                                </div>
+                            </div>
+                            <div class="detail-group">
+                                <div class="detail-row">
+                                    <span>Avg. Winning Trade</span>
+                                    <strong id="detail-avg-win">$0.00</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Avg. Losing Trade</span>
+                                    <strong id="detail-avg-loss">$0.00</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Best Trade</span>
+                                    <strong id="detail-best">$0.00</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Worst Trade</span>
+                                    <strong id="detail-worst">$0.00</strong>
+                                </div>
+                            </div>
+                            <div class="detail-group">
+                                <div class="detail-row">
+                                    <span>Trades</span>
+                                    <strong id="detail-trades">0</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Long Win Rate</span>
+                                    <strong id="detail-long-win">0%</strong>
+                                </div>
+                                    <div class="detail-row">
+                                    <span>Short Win Rate</span>
+                                    <strong id="detail-short-win">0%</strong>
+                                </div>
+                                <div class="detail-row">
+                                    <span>Profit Factor</span>
+                                    <strong id="detail-profit-factor">0.00</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-panel" id="panel-analytics">
+                        <div class="analytics-grid">
+                            <div class="chart-container mini-chart">
+                                <div class="chart-header">
+                                    <h4>Win / Loss Ratio</h4>
+                                    <span class="chart-subtitle">Proportion of winning vs losing trades</span>
+                                </div>
+                                <canvas id="winLossChart"></canvas>
+                            </div>
+                            <div class="chart-container mini-chart">
+                                <div class="chart-header">
+                                    <h4>PnL by Weekday</h4>
+                                    <span class="chart-subtitle">Which days perform best</span>
+                                </div>
+                                <canvas id="weekdayChart"></canvas>
+                            </div>
+                            <div class="chart-container mini-chart">
+                                <div class="chart-header">
+                                    <h4>PnL by Month</h4>
+                                    <span class="chart-subtitle">Monthly performance overview</span>
+                                </div>
+                                <canvas id="monthlyChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="form-section">
+                <div class="section-header">
+                    <h3>Log New Trade</h3>
+                    <p class="section-subtitle">Quickly journal each position to keep your metrics accurate.</p>
+                </div>
+                <div class="input-group">
+                    <input type="text" id="pair" placeholder="Pair (e.g. XAUUSD, EURUSD)">
+                    <input type="number" id="entry" placeholder="Entry price">
+                    <input type="number" id="exit" placeholder="Exit price">
+                    <input type="number" id="lots" placeholder="Lot size">
+                </div>
+                <div class="input-group">
+                    <select id="strategy">
+                        <option value="">Strategy</option>
+                        <option value="Impulse">Impulse</option>
+                        <option value="Breakout Closing">Breakout Closing</option>
+                    </select>
+                    <select id="trade-type">
+                        <option value="">Trade type</option>
+                        <option value="Continuation">Continuation</option>
+                        <option value="Reversal">Reversal</option>
+                    </select>
+                    <input type="number" id="pnl" placeholder="PnL ($)">
+                    <button onclick="addTrade()" class="btn-primary">Add Trade</button>
+                </div>
+            </section>
+
+            <section class="table-section">
+                <div class="section-header">
+                    <h3>Trade History</h3>
+                    <div class="table-filters">
+                        <select id="filter-pair" onchange="updateDashboard()">
+                            <option value="">All Pairs</option>
+                        </select>
+                        <select id="filter-result" onchange="updateDashboard()">
+                            <option value="">All Results</option>
+                            <option value="win">Winning</option>
+                            <option value="loss">Losing</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="trades-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Pair</th>
+                                <th>Strategy</th>
+                                <th>Type</th>
+                                <th>Entry</th>
+                                <th>Exit</th>
+                                <th>Lots</th>
+                                <th>Side</th>
+                                <th>PnL ($)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trade-rows">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
