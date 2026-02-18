@@ -15,7 +15,9 @@
             <ul class="nav-links">
                 <li class="active"><i data-lucide="layout-dashboard"></i> Dashboard</li>
                 <li onclick="exportData()"><i data-lucide="download"></i> Backup Data</li>
+                <li onclick="document.getElementById('import-file').click()"><i data-lucide="upload"></i> Import Data</li>
             </ul>
+            <input type="file" id="import-file" accept=".json,application/json" style="display: none;" onchange="importData(event)">
         </nav>
 
         <main class="main-content">

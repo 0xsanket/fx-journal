@@ -364,6 +364,40 @@ function exportData() {
     a.click();
 }
 
+function importData(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        try {
+            const text = e.target.result;
+            const parsed = JSON.parse(text);
+
+            let importedTrades = [];
+            if (Array.isArray(parsed)) {
+                importedTrades = parsed;
+            } else if (parsed && Array.isArray(parsed.trades)) {
+                importedTrades = parsed.trades;
+            } else {
+                alert('Invalid backup format. Expected an array of trades.');
+                return;
+            }
+
+            trades = importedTrades;
+            localStorage.setItem('trades', JSON.stringify(trades));
+            updateDashboard();
+        } catch (err) {
+            console.error('Failed to import data', err);
+            alert('Could not read this JSON file. Please check the format.');
+        } finally {
+            event.target.value = '';
+        }
+    };
+
+    reader.readAsText(file);
+}
+
 // Tab switching for analytics section
 document.querySelectorAll('.analytics-tab').forEach(btn => {
     btn.addEventListener('click', () => {
