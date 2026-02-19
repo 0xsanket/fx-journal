@@ -22,6 +22,7 @@ export function LogTradeForm({ onAddTrade }) {
   const [emotion, setEmotion] = useState(0);
   const [tradeDate, setTradeDate] = useState('');
   const [tradeTime, setTradeTime] = useState('');
+  const [timeframe, setTimeframe] = useState('');
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -30,7 +31,7 @@ export function LogTradeForm({ onAddTrade }) {
     const lotsNum = parseFloat(lots);
     const pnlNum = parseFloat(pnl);
     if (!pair.trim() || isNaN(entryNum) || isNaN(exitNum) || isNaN(lotsNum) || isNaN(pnlNum)) return;
-    
+
     const tradeData = {
       pair: pair.toUpperCase(),
       entry: entryNum,
@@ -48,20 +49,21 @@ export function LogTradeForm({ onAddTrade }) {
     if (emotion > 0) tradeData.emotion = emotion;
     if (tradeDate) tradeData.tradeDate = tradeDate;
     if (tradeTime) tradeData.tradeTime = tradeTime;
-    
+    if (timeframe) tradeData.timeframe = timeframe;
+
     const chartLinksFiltered = {};
     if (chartLinks.d1.trim()) chartLinksFiltered.d1 = chartLinks.d1.trim();
     if (chartLinks.h4.trim()) chartLinksFiltered.h4 = chartLinks.h4.trim();
     if (chartLinks.h1.trim()) chartLinksFiltered.h1 = chartLinks.h1.trim();
     if (chartLinks.m30.trim()) chartLinksFiltered.m30 = chartLinks.m30.trim();
     if (chartLinks.m15.trim()) chartLinksFiltered.m15 = chartLinks.m15.trim();
-    
+
     if (Object.keys(chartLinksFiltered).length > 0) {
       tradeData.chartLinks = chartLinksFiltered;
     }
 
     onAddTrade(tradeData);
-    
+
     // Reset all fields
     setPair('');
     setEntry('');
@@ -77,6 +79,7 @@ export function LogTradeForm({ onAddTrade }) {
     setEmotion(0);
     setTradeDate('');
     setTradeTime('');
+    setTimeframe('');
     setFormTab('details');
   }
 
@@ -92,7 +95,7 @@ export function LogTradeForm({ onAddTrade }) {
           <p className="section-subtitle">Quickly journal each position to keep your metrics accurate.</p>
         </div>
       </div>
-      
+
       <div className="form-tabs">
         <button
           type="button"
@@ -172,6 +175,15 @@ export function LogTradeForm({ onAddTrade }) {
                 <option value="london">London</option>
                 <option value="pre_new_york">Pre New York</option>
                 <option value="new_york">New York</option>
+              </select>
+              <select value={timeframe} onChange={(e) => setTimeframe(e.target.value)}>
+                <option value="">Timeframe</option>
+                <option value="Daily">Daily</option>
+                <option value="4H">4 Hour</option>
+                <option value="1H">1 Hour</option>
+                <option value="30m">30 Minutes</option>
+                <option value="15m">15 Minutes</option>
+                <option value="5m">5 Minutes</option>
               </select>
               <input
                 type="number"

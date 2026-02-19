@@ -11,6 +11,7 @@ import {
 } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { TradeGrowthView } from './TradeGrowthView';
+import { PnLCalendar } from './PnLCalendar';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
 
@@ -207,6 +208,13 @@ export function AnalyticsSection({ stats, filteredTrades, uniquePairs }) {
         </button>
         <button
           type="button"
+          className={`analytics-tab ${mainTab === 'calendar' ? 'active' : ''}`}
+          onClick={() => setMainTab('calendar')}
+        >
+          Calendar
+        </button>
+        <button
+          type="button"
           className={`analytics-tab ${mainTab === 'graph' ? 'active' : ''}`}
           onClick={() => setMainTab('graph')}
         >
@@ -236,6 +244,10 @@ export function AnalyticsSection({ stats, filteredTrades, uniquePairs }) {
               <div className="detail-row"><span>Profit Factor</span><strong>{s.profitFactor.toFixed(2)}</strong></div>
             </div>
           </div>
+        </div>
+
+        <div className={`analytics-panel ${mainTab === 'calendar' ? 'active' : ''}`}>
+          <PnLCalendar filteredTrades={filteredTrades} />
         </div>
 
         <div className={`analytics-panel ${mainTab === 'graph' ? 'active' : ''}`}>

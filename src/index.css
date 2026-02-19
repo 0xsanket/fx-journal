@@ -55,7 +55,7 @@ body {
   transition: 0.3s;
 }
 
-.nav-links li + li {
+.nav-links li+li {
   margin-top: 6px;
 }
 
@@ -1133,4 +1133,341 @@ select {
     max-width: 95%;
     margin: 10px;
   }
+}
+
+.metadata-modal-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #334155;
+}
+
+.metadata-modal-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #f8fafc;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.modal-close:hover {
+  background: rgba(148, 163, 184, 0.1);
+  color: #e5e7eb;
+}
+
+.metadata-modal-content {
+  padding: 24px;
+}
+
+.metadata-section {
+  margin-bottom: 24px;
+}
+
+.metadata-section:last-child {
+  margin-bottom: 0;
+}
+
+.metadata-section h5 {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.learning-text {
+  margin: 0;
+  color: #e5e7eb;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.chart-links-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chart-link-item-modal {
+  display: block;
+  padding: 10px 14px;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 8px;
+  color: #a5b4fc;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.chart-link-item-modal:hover {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.4);
+  color: #c7d2fe;
+  transform: translateX(4px);
+}
+
+.pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: #9ca3af;
+}
+
+.pagination-info {
+  min-width: 90px;
+  text-align: center;
+}
+
+.pagination-btn {
+  background: #111827;
+  border: 1px solid #374151;
+  color: #e5e7eb;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #1f2937;
+  border-color: #4b5563;
+}
+
+.pagination-btn:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+@media (max-width: 1024px) {
+  .app-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .charts-row {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-group {
+    border-right: none;
+    border-bottom: 1px solid rgba(30, 64, 175, 0.3);
+    padding-bottom: 12px;
+    margin-bottom: 10px;
+  }
+
+  .detail-group:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 20px 16px 24px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .input-group {
+    flex-direction: column;
+  }
+
+  .table-section {
+    padding: 18px 14px;
+  }
+
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .symbol-performance-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .trade-growth-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .chart-links-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .row-actions {
+    min-width: auto;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .metadata-modal {
+    max-width: 95%;
+    margin: 10px;
+  }
+}
+
+/* PnL Calendar Styles */
+.pnl-calendar-container {
+  padding: 10px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.calendar-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #f8fafc;
+}
+
+.calendar-nav-btn {
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #cbd5e1;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.calendar-nav-btn:hover {
+  background: #334155;
+  color: #fff;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.calendar-day-header {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  padding-bottom: 8px;
+  font-weight: 500;
+}
+
+.calendar-day {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  min-height: 80px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.calendar-day.empty {
+  background: transparent;
+  border: none;
+}
+
+.calendar-day:not(.empty):hover {
+  z-index: 10;
+  transform: translateY(-2px);
+}
+
+.day-number {
+  font-size: 0.8rem;
+  color: #64748b;
+  align-self: flex-end;
+}
+
+.day-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.day-pnl {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.day-trades {
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+/* Profit Days */
+.calendar-day.profit {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.calendar-day.profit .day-pnl {
+  color: #34d399;
+}
+
+.calendar-day.profit:hover {
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+  background: rgba(16, 185, 129, 0.15);
+  border-color: #34d399;
+}
+
+/* Loss Days */
+.calendar-day.loss {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.calendar-day.loss .day-pnl {
+  color: #f87171;
+}
+
+.calendar-day.loss:hover {
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.15);
+  border-color: #f87171;
+}
+
+/* Neutral Days */
+.calendar-day.neutral {
+  background: #1e293b;
+}
+
+.calendar-day.neutral:hover {
+  border-color: #64748b;
 }

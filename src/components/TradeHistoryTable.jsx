@@ -93,6 +93,7 @@ export function TradeHistoryTable({
             <tr>
               <th>Date</th>
               <th>Day</th>
+              <th>TF</th>
               <th>Pair</th>
               <th>Strategy</th>
               <th>Type</th>
@@ -117,6 +118,7 @@ export function TradeHistoryTable({
                       : '-';
                   })()}
                 </td>
+                <td>{t.timeframe || '-'}</td>
                 <td>{t.pair}</td>
                 <td>{t.strategy || '-'}</td>
                 <td>{t.tradeType || '-'}</td>
@@ -148,15 +150,15 @@ export function TradeHistoryTable({
                     {(t.learning ||
                       (t.chartLinks && Object.keys(t.chartLinks).length > 0) ||
                       (typeof t.emotion === 'number' && t.emotion > 0)) && (
-                      <button
-                        type="button"
-                        className="metadata-icon learning-icon"
-                        onClick={() => openMetadataModal(t)}
-                        title="View learning notes and charts"
-                      >
-                        📝
-                      </button>
-                    )}
+                        <button
+                          type="button"
+                          className="metadata-icon learning-icon"
+                          onClick={() => openMetadataModal(t)}
+                          title="View learning notes and charts"
+                        >
+                          📝
+                        </button>
+                      )}
                   </div>
                   <button
                     type="button"
@@ -271,14 +273,32 @@ export function TradeHistoryTable({
             </div>
             <div className="metadata-modal-content">
               <div className="learning-input-group">
-                <label className="learning-label">Pair</label>
-                <input
-                  type="text"
-                  value={editingTrade.pair || ''}
-                  onChange={(e) =>
-                    setEditingTrade((prev) => ({ ...prev, pair: e.target.value }))
-                  }
-                />
+                <label className="learning-label">Pair / Timeframe</label>
+                <div className="input-group" style={{ marginBottom: '10px' }}>
+                  <input
+                    type="text"
+                    value={editingTrade.pair || ''}
+                    onChange={(e) =>
+                      setEditingTrade((prev) => ({ ...prev, pair: e.target.value }))
+                    }
+                    placeholder="Pair"
+                  />
+                  <select
+                    value={editingTrade.timeframe || ''}
+                    onChange={(e) =>
+                      setEditingTrade((prev) => ({ ...prev, timeframe: e.target.value }))
+                    }
+                    style={{ flex: 1 }}
+                  >
+                    <option value="">Timeframe</option>
+                    <option value="Daily">Daily</option>
+                    <option value="4H">4 Hour</option>
+                    <option value="1H">1 Hour</option>
+                    <option value="30m">30 Minutes</option>
+                    <option value="15m">15 Minutes</option>
+                    <option value="5m">5 Minutes</option>
+                  </select>
+                </div>
               </div>
               <div className="learning-input-group">
                 <label className="learning-label">Entry / Exit / Lots</label>
